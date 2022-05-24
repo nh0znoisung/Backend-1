@@ -13,3 +13,21 @@
 
 ## Assignment 4
 > Bump script
+We use the library, 
+
+#### Usage
+```bash
+bash bump_script.sh [Option] [Filename]
+```
+[Option]: 
++ `patch`: the program will bump **patch version**.
++ `minor`: the program will bump **minor version**.
++ `major`: the program will bump **major version**. 
+
+| (vertical)
+
+The vertical bar | is commonly referred to as a "pipe". It is used to pipe one command into another. That is, it directs the output from the first command into the input for the second command.
+
+
+grep -E -o 'finalNumber="[0-9]+"' file.xml | grep -E -o '[0-9]+'
+Use -E for extended regular expressions, and -o to print only the matching part.
