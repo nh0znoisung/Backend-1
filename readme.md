@@ -42,6 +42,7 @@ Yes. But it just work on the small-scale project, handle with small transaction 
 Backendless is an application development platform which has been designed to serve individual developers as well as software agencies. This can provide end to end solutions which are designed for mobile or web development. Some key feature that Backendless app support including Database (Sql, Nosql,...), Cloud Code, Caching, Geolocation, Codeless, Security, Real-time data,...
 </details>
 <!-- Know your environment -->
+
 ### Know your environment
 <details>
 <summary>Click to toggle contents of submission <b>Know your environment</b></summary>
@@ -223,6 +224,7 @@ echo $NAME #
 ```
 </details>
 <!-- Know your tools -->
+
 ### Know your tools
 #### Basic command
 <details> 
@@ -617,6 +619,7 @@ sudo chfn -h [Phone]
 ```
 </details>
 <!-- Control Permission -->
+
 #### Controlling permission command
 <details> 
 <summary>Click to toggle contents of submission <b>Controlling permission command</b></summary>
@@ -801,6 +804,7 @@ gzip -r folder
 # Result: inside the folder and subfolder, each file in it convert into gzip compression.
 ```
 </details>
+
 #### Disk storage management command
 <details> 
 <summary>Click to toggle contents of submission <b>Disk storage management command</b></summary>
@@ -840,6 +844,7 @@ du .
 3. `-a` option: Print all files including directories.
 
 </details>
+
 <!-- System Adminstrator Statistic -->
 #### System adminstrator statistic command
 <details> 
@@ -886,6 +891,7 @@ lsof [options] [username]
 ```
 </details>
 <!-- System Adminstrator Statistic -->
+
 #### Connecting to a Remote Server command
 <details> 
 <summary>Click to toggle contents of submission <b>Connecting to a Remote Server command</b></summary>
