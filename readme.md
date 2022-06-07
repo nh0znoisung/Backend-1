@@ -624,7 +624,7 @@ sudo chfn -h [Phone]
 <details> 
 <summary>Click to toggle contents of submission <b>Controlling permission command</b></summary>
 
-#### 3. chmod
+#### 1. chmod
 In Unix-like operating systems, the `chmod` command is used to change the access mode of a file.
 
 **Ownership and Permissions**: To protect and secure files and directory in Linux we use permissions to control what a user can do with a file or directory. Linux uses **three** types of permissions:  `Read`, `Write` and `Execute`
@@ -687,7 +687,7 @@ chmod 777 foldername
 chmod 327 foldername 
 # 327 = (0-1-1)(0-1-0)(1-1-1) will give write and execute (3) permission for the user, w (2) for the group, and read, write, and execute for the users.
 ```
-#### 4. chown
+#### 2. chown
 You can set the owner by using “chown” command.
 **Syntax**
 ```bash
@@ -718,7 +718,7 @@ chown :group1 file1.txt
 chown master:group1 file1.txt
 # Change owner to master and group ownership to group1
 ```
-#### 5. chgrp
+#### 3. chgrp
 All files in Linux belong to an owner and a group. `chgrp` command in Linux is used to change the **group ownership** of a file or directory.
 At first, we need to have *administrator permission* to add or delete groups. We can Login as root for this purpose or using `sudo`. In order to add a new group we can use this command:
 ```bash
@@ -850,7 +850,7 @@ du .
 <details> 
 <summary>Click to toggle contents of submission <b>System adminstrator statistic command</b></summary>
 
-#### 3. htop 
+#### 1. htop 
 htop is a system monitoring utility that runs on the terminal. It is similar to another commonly used utility called top. But htop is much easier to use. htop program’s user interface is ncurses based and the information representation is really clean and nice
 **Installation**
 ```bash
@@ -864,7 +864,7 @@ htop [options]
 ```
 ![](images/htop.png)  
 As we can see some basic information in beautiful UI monitor. For example, how much main memory or RAM is available and how much is used,  uptime of our computer, how much of the CPU is used and some button for searching, quiting,...
-#### 4. netstat
+#### 2. netstat
 `Netstat` is a command-line tool used by *system administrators* to evaluate *network configuration* and activity. The term Netstat is results from **network** and **statistics**. It shows *open ports* on the host device and their corresponding addresses, the routing table, and masquerade connections.
 **Installation**
 ```bash
@@ -882,7 +882,7 @@ netstat [options]
 3. `-au` option: Listing only UDP port connections.
 4. `-l` option: Listing all active listening ports connections.
 5. `-lt`, `-lu` options corresponding listing all active listening TCP and UDP port.
-#### 5. lsof
+#### 3. lsof
 `lsof` command stands for List Of Open File. This command provides a list of files that are opened. Basically, it gives the information to find out the files which are opened by which process. With one go it lists out all open files in output console. It cannot only list common regular files but it can list a directory, a block special file, a shared library, a character special file, a regular pipe, a named pipe, an internet socket, a UNIX domain socket, and many others. it can be combined with grep command can be used to do advanced searching and listing. 
 **Syntax**
 ```bash
@@ -897,7 +897,7 @@ lsof [options] [username]
 <summary>Click to toggle contents of submission <b>Connecting to a Remote Server command</b></summary>
 <!-- Connect to a Remote Server -->
 
-#### 6. ssh
+#### 1. ssh
 The `ssh` command provides a secure encrypted connection between two hosts over an insecure network. This connection can also be used for terminal access, file transfers, and for tunneling other applications.
 **Usage**
 1. Connect to remote server from Linux client
@@ -921,7 +921,7 @@ ssh alternative-username@sample.ssh.com
 # or
 ssh -l alternative-username sample.ssh.com
 ```
-#### 7. scp
+#### 2. scp
 `SCP` (Secure Copy Protocol) is a network protocol used to securely copy files/folders between Linux (Unix) systems on a network. To transmit, use the **scp command** line utility, a safer variant of the cp (copy) command.
 **Syntax**
 ```bash
