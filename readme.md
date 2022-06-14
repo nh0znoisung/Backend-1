@@ -19,6 +19,7 @@
 2. [Assignment 2](#assignment-2)
 3. [Assignment 3](#assignment-3)
 4. [Assignment 4](#assignment-4)
+5. [Assignment 5](#assignment-5)
 ## Assignment 1
 > Try to answer the questions throughout this module (including next week's), note down your takeaway into your submission. We will learn from each other's notes.
 
@@ -1261,10 +1262,6 @@ Make sure VPS server turn on, go to local terminal and enter the following comma
 scp bump_script.sh ubuntu@xxx.xxx.xxx:/home/ubuntu #Copy a File from Local to Remote Server
 exit #logout the remote 
 ```
- 
-
-
-
 
 
 <!-- scp vs rsync -->
@@ -1276,3 +1273,8 @@ The vertical bar | is commonly referred to as a "pipe". It is used to pipe one c
 
 grep -E -o 'finalNumber="[0-9]+"' file.xml | grep -E -o '[0-9]+'
 Use -E for extended regular expressions, and -o to print only the matching part. -->
+
+
+
+## Assignment 5
+The elevator project have the 
