@@ -1278,3 +1278,30 @@ Use -E for extended regular expressions, and -o to print only the matching part.
 
 ## Assignment 5
 The elevator project have the 
+design for one elevator, and m floors.
+
+### Usage
+Already instlal `Docker` and `Docker Compose` with lastest version.
+```bash
+docker-compose up -d # Build container
+docker ps -a # See all the container that running
+docker logs elevator_system --follow # Keep live monitor console
+docker kill elevator_system # Terminate the system
+```
+
+### APIs
+1. Start the system
+```bash
+POST:     https://tuanqm.  /inside/api
+```
+2. Terminate the system
+```bash
+
+```
+
+### Testing
+### Deployment
+
+### Create a domain
+
+### Upload to VPS
