@@ -1,7 +1,7 @@
 from fastapi import FastAPI, BackgroundTasks
 import numpy as np
-from utils import *
-from checker import *
+from src.utils import *
+from src.checker import *
 
 app = FastAPI()
 
