@@ -17,9 +17,9 @@ class Checker:
             raise Exception("The environment file is not found")
         
         # UndefinedValueError
-        env = os.getenv('NUMS_FLOOR')
-        env = int(env) # int checker
-        return env
+        # env = config('NUMS_FLOOR')
+        # env = int(env) # int checker
+        # return env
 
         
     @staticmethod

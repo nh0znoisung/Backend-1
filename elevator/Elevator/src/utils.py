@@ -1,13 +1,8 @@
-from distutils.util import check_environ
-from enum import Enum
-from dataclasses import dataclass
 import time
 from collections import deque
-from src.checker import Checker
-# import asyncio
-# from typing import List, Set, Tuple, Dict, Union, Optional
-# import threading
-from decouple import config
+import threading
+from checker import Checker
+
 
 class Request:
     is_done: bool
@@ -29,13 +24,17 @@ class Floor:
         self.floor_number = -1 # Excetion number
         self.requests = []
     
-    def ping(self): # Ping to Elevator
+    def ping(self, elevator_number: int): # Ping to Elevator
         # Only 1 elevator is global
-        elevator.requests.append(self.floor_number)
+        # print("Ping to elevator " + str(elevator_number))
+        setting.LIST_ELEVATOR[elevator_number].requests.append(self.floor_number)
+        # print(setting.LIST_ELEVATOR[elevator_number].requests)
 
-    def add_request(self, request: Request):
+    def add_request(self, request: Request, elevator_number: int):
+        # print("Add request ele " + str(elevator_number))
         if len(self.requests) == 0:
-            self.ping()
+            # print("Hello Ping")
+            self.ping(elevator_number)
         self.requests.append(request)
     
     def release_request(self):
@@ -45,66 +44,125 @@ class Floor:
 
 
 class Elevator:
+    elevator_number: int
     requests: deque
     curr_floor: int
     target_floor: int
-    is_running: bool
-    is_stopped: bool
 
-    def __init__(self):
+    def __init__(self, elevator_number):
         self.requests = deque()
         self.curr_floor = 0
         self.target_floor = 0
-        self.is_running = False
-        self.is_stopped = False
-
+        self.elevator_number = elevator_number
 
     def move(self):
         # Move from curr_floor to target_floor
-        print("The elevator is moving to floor {}".format(self.target_floor))
+        print("Elevator {:6s} The elevator is moving from floor {} to floor {}".format(str(self.elevator_number)+':', self.curr_floor, self.target_floor))
         up = True if self.target_floor > self.curr_floor else False
-        while self.curr_floor != self.target_floor:
-            print("The elevator is on floor {}".format(self.curr_floor))
+        while True:
+            print("Elevator {:6s} The elevator is on floor {}".format(str(self.elevator_number)+':', self.curr_floor))
+            if self.curr_floor == self.target_floor:
+                break
             tic = time.time()
             while True:
                 toc = time.time()
-                if toc - tic > DELAY_TIME:
+                if toc - tic > setting.DELAY_TIME:
                     break
             # Go up or down
             if up:
                 self.curr_floor += 1
             else:
                 self.curr_floor -= 1
-
-    def stop(self):
-        self.is_stopped = True
+        print("Elevator {:6s} The elevator finished journey at floor {}".format(str(self.elevator_number)+':', self.target_floor))
+       
+    # def stop(self):
+    #     self.is_stopped = True
 
     def run(self):
-        if self.is_running:
-            return
-        self.is_running = True
-        self.is_stopped = False
+        # print("Hello running")        
+        # if not system.is_running:
+        #     return
+        # print("Hello running")
+        # system.is_running = True
+        tic = time.time()
         while True:
-            if self.is_stopped:
-                break
+            toc = time.time()
+            if toc - tic > 3:
+                tic = toc
+                # print(system.is_running)    
+            if not system.is_running:
+                continue
+            toc = time.time()
+            if toc - tic > 3:
+                tic = toc
+                # print("Hello: " + str(self.elevator_number) + str(self.requests))
             if len(self.requests) == 0:
                 continue
-
+            
+            
             # Get request
             self.target_floor = self.requests[0]
 
             # Move
             self.move()
-            # print("Done move")
 
             # Come and release the request in floor
-            LIST_FLOOR[self.requests[0]].release_request()
+            setting.LIST_FLOOR[self.requests[0]].release_request()
             self.requests.popleft()
 
 
-DELAY_TIME = 1.5
-FLOOR_NUMS = Checker.get_environment("NUMS_FLOOR") # 0-9
-Checker.check_environment(FLOOR_NUMS)
-LIST_FLOOR = [Floor(i) for i in range(FLOOR_NUMS)]
-elevator = Elevator()
-# lock = threading.Lock()
+class Setting:
+    DELAY_TIME: int
+    FLOOR_NUMS: int # Checker.get_environment("NUMS_FLOOR")
+    LIST_FLOOR: list
+    ELEVATOR_NUMS: int  
+    LIST_ELEVATOR: list
+
+    # Default settings
+    def __init__(self, delay_time = 1.5, floor_number = 10, elevator_number = 3):
+        self.DELAY_TIME = delay_time
+        self.FLOOR_NUMS = floor_number
+        self.LIST_FLOOR = [Floor(i) for i in range(self.FLOOR_NUMS)]
+        self.ELEVATOR_NUMS = elevator_number
+        self.LIST_ELEVATOR = [Elevator(i) for i in range(self.ELEVATOR_NUMS)]
+
+    def set_floor(self, floor_number: int):
+        self.FLOOR_NUMS = floor_number
+        self.LIST_FLOOR = [Floor(i) for i in range(self.FLOOR_NUMS)]
+
+    def set_elevator(self, elevator_number: int):
+        self.ELEVATOR_NUMS = elevator_number
+        self.LIST_ELEVATOR = [Elevator(i) for i in range(self.ELEVATOR_NUMS)]
+        system.LIST_THREAD = [threading.Thread(target=system.run_elevator, args=(i,)) for i in range(self.ELEVATOR_NUMS)]
+
+class System:
+    is_running: bool
+    LIST_THREAD: list
+    is_first_set: bool
+
+    def run_elevator(self, elevator_number):
+        setting.LIST_ELEVATOR[elevator_number].run()
+
+    def __init__(self):
+        self.is_running = False
+        self.is_first_set = False
+        self.LIST_THREAD = [threading.Thread(target=self.run_elevator, args=(i,)) for i in range(setting.ELEVATOR_NUMS)]
+
+    def setup(self):
+        # Using thread
+        self.is_running = True
+        # lock = threading.Lock()
+        # if not self.is_first_set:
+        #     self.is_first_set = True
+        for i in range(setting.ELEVATOR_NUMS):
+            self.LIST_THREAD[i].start()
+
+    def terminate(self):
+        # Join thread
+        self.is_running = False
+        for i in range(setting.ELEVATOR_NUMS):
+            self.LIST_THREAD[i].join()
+
+# checker = Checker()
+setting = Setting()
+system = System()

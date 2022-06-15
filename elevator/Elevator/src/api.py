@@ -1,11 +1,10 @@
 from fastapi import FastAPI, BackgroundTasks
-from src.utils import *
-from src.checker import *
-
+import numpy as np
+from utils import *
+from checker import *
 
 app = FastAPI()
 
-# app.post(/monitor)
 # app.post("start-system/-/{floor_number}")
 # app.post("end-system/")
 
@@ -15,55 +14,61 @@ def check_release(request):
     return True
 
 def setup():
-    elevator.run()
+    system.setup()
 
 def end():
-    elevator.stop()
+    system.terminate()
 
-@app.post("/start-system")
-async def start_system(background_tasks: BackgroundTasks):
-    if elevator.is_running:
-        return "The elevator is already running"
+@app.post("/start-system/{floor_number}/{elevator_number}")
+async def start_system(floor_number: int, elevator_number: int, background_tasks: BackgroundTasks):
+    if system.is_running:
+        return "The elevator is already running. You can re-config the settings after restarting the system."
+    
+    setting.set_floor(floor_number)
+    setting.set_elevator(elevator_number)
+
     background_tasks.add_task(setup)
-    return "The elevator launched successfully."
+    print("The elevator launched successfully with {} floors and {} elevators.".format(floor_number, elevator_number))
+    return "The elevator launched successfully with {} floors and {} elevators.".format(floor_number, elevator_number)
 
 @app.post("/end-system")
 async def end_system(background_tasks: BackgroundTasks):
     background_tasks.add_task(end)
     return "The elevator is stopped."
 
-@app.post("/inside/{floor_number}")
-def send_inside(floor_number: int):
-    if elevator.is_stopped:
+@app.post("/inside/{floor_number}/{elevator_number}")
+def send_inside(floor_number: int, elevator_number: int):
+    if not system.is_running:
         return "The elevator is not running. Please launch the elevator first."
     
     request = Request()
 
-    if elevator.curr_floor == floor_number:
-        return "You are already at the floor you want to go."
-
-    LIST_FLOOR[floor_number].add_request(request)
+    setting.LIST_FLOOR[floor_number].add_request(request, elevator_number)
     check_release(request)
     return "The request is completed."
 
 
+# Outside: Ping to specific elevator
 @app.post("/outside/{floor_number}")
 def send_outside(floor_number: int):
-    if elevator.is_stopped:
+    if not system.is_running:
         return "The elevator is not running. Please launch the elevator first."
     
     try:
-        Checker.check_floor(floor_number, FLOOR_NUMS)
+        Checker.check_floor(floor_number, setting.FLOOR_NUMS)
     except Exception as e:
         return e
 
     request = Request()
 
-    if elevator.curr_floor == floor_number:
-        return "You are already at the floor you want to go."
+    # Which elevator have min request
+    elevator_request = np.array([len(elevator.requests) for elevator in setting.LIST_ELEVATOR])
+    elevator_number_min = np.argmax(np.random.random(elevator_request.shape) * (elevator_request == elevator_request.min()))
 
-    LIST_FLOOR[floor_number].add_request(request)
+    # np.argmin(elevator_request)
+
+    setting.LIST_FLOOR[floor_number].add_request(request, elevator_number_min)
     check_release(request)
-    return "The request is completed."
+    return "The request is completed. The elevator {} came.".format(elevator_number_min)
 
-# uvicorn.run("app.api:app", host="0.0.0.0", port=8080, reload=True)
+# uvicorn.run("app.api:app", host="0.0.0.0", port=8000, reload=True)

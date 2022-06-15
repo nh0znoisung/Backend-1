@@ -1,6 +1,5 @@
 # https://betterprogramming.pub/how-to-create-a-post-request-in-fastapi-3dbd017dd998/
-import unittest, sys
-import pytest
+import unittest, sys, pytest
 from unittest.mock import MagicMock
 
 # sys.path.append('../')

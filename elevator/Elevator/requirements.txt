@@ -1,6 +1,6 @@
-python-decouple
 fastapi
 uvicorn
-pydantic
 mock
 pytest
+numpy
+unittest
