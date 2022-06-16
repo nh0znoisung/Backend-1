@@ -5,8 +5,6 @@ from src.checker import *
 
 app = FastAPI()
 
-# app.post("start-system/-/{floor_number}")
-# app.post("end-system/")
 
 def check_release(request):
     while not request.is_done:
@@ -24,6 +22,13 @@ async def start_system(floor_number: int, elevator_number: int, background_tasks
     if system.is_running:
         return "The elevator is already running. You can re-config the settings after restarting the system."
     
+    # Validation input
+    try:
+        checker.check_positive(floor_number)
+        checker.check_positive(elevator_number)
+    except Exception as e:
+        return e
+
     setting.set_floor(floor_number)
     setting.set_elevator(elevator_number)
 
@@ -41,6 +46,13 @@ def send_inside(floor_number: int, elevator_number: int):
     if not system.is_running:
         return "The elevator is not running. Please launch the elevator first."
     
+    # Validation input
+    try:
+        checker.check_floor(floor_number, setting.FLOOR_NUMS)
+        checker.check_elevator(elevator_number, setting.ELEVATOR_NUMS)
+    except Exception as e:
+        return e
+
     request = Request()
 
     setting.LIST_FLOOR[floor_number].add_request(request, elevator_number)
@@ -54,8 +66,9 @@ def send_outside(floor_number: int):
     if not system.is_running:
         return "The elevator is not running. Please launch the elevator first."
     
+    # Validation input    
     try:
-        Checker.check_floor(floor_number, setting.FLOOR_NUMS)
+        checker.check_floor(floor_number, setting.FLOOR_NUMS)
     except Exception as e:
         return e
 
@@ -65,10 +78,6 @@ def send_outside(floor_number: int):
     elevator_request = np.array([len(elevator.requests) for elevator in setting.LIST_ELEVATOR])
     elevator_number_min = np.argmax(np.random.random(elevator_request.shape) * (elevator_request == elevator_request.min()))
 
-    # np.argmin(elevator_request)
-
     setting.LIST_FLOOR[floor_number].add_request(request, elevator_number_min)
     check_release(request)
     return "The request is completed. The elevator {} came.".format(elevator_number_min)
-
-# uvicorn.run("app.api:app", host="0.0.0.0", port=8000, reload=True)

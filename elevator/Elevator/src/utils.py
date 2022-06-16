@@ -147,6 +147,6 @@ class System:
         for i in range(setting.ELEVATOR_NUMS):
             self.LIST_THREAD[i].join()
 
-# checker = Checker()
+checker = Checker()
 setting = Setting()
 system = System()

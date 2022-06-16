@@ -1294,7 +1294,7 @@ docker kill elevator_system # Terminate the system
 
 #### Testing
 ```bash
-docker exec elevator_system pytest 
+docker exec elevator_system pytest test # Test using pytest
 ```
 
 ### APIs
@@ -1323,8 +1323,8 @@ POST:  "http://tuanqm.duckdns.org:8000/outside/{floor_number}"
 
 ### APIs notes
 
-**1.** We can replace the domain `tuanqm.duckdns.org` to IP address `52.77.254.160`
-
+**1.** We can replace the domain `tuanqm.duckdns.org` to IP address `52.77.254.160` (It can change each time we restart the instance of VPS version.)
+<!-- http://127.0.0.1:8000 -->
 
 **2.** We can call a API via command `curl`:
 ```bash
@@ -1361,6 +1361,7 @@ In this project, we used `thread` for handling the multiple elevators. So, the p
 + `release()`: To release a lock
 
 To apply this technique, in `run()` of each elevator, elevator afftect to `setting.LIST_FLOOR` - a global variable. So we can bounding it by 2 function **acquire** and **release**. 
+
 ![](images/race-con.png)  
 ### Step-by-step project processing
 

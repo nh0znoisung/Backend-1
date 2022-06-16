@@ -3,26 +3,23 @@ import os
 
 class Checker:
     # floor_number. Fastapi make sure it is Int
-    # upper_bound. Make sure int > 0
-    @staticmethod
-    def check_floor(floor_number: int, upper_bound: int):
+    # From >= 0 and < upper_bound
+    # upper_bound > 0
+    def check_floor(self, floor_number: int, upper_bound: int):
         if floor_number < 0:
             raise Exception("The floor number can not be negative")
         elif floor_number >= upper_bound:
             raise Exception("The floor number is out of range")
+        return True
 
-    @staticmethod
-    def get_environment(field_name: str = 'NUMS_FLOOR'):
-        if not os.path.exists("./.env"):
-            raise Exception("The environment file is not found")
-        
-        # UndefinedValueError
-        # env = config('NUMS_FLOOR')
-        # env = int(env) # int checker
-        # return env
+    def check_elevator(self, elevator_number: int, upper_bound: int):
+        if elevator_number < 0:
+            raise Exception("The elevator number can not be negative")
+        elif elevator_number >= upper_bound:    
+            raise Exception("The elevator number is out of range")
+        return True
 
-        
-    @staticmethod
-    def check_environment(var: int):
-        if var <= 0:
-            raise Exception("The number of floors can not be negative")
+    def check_positive(self, number: int):
+        if number <= 0:
+            raise Exception("The input must be positive")
+        return True
