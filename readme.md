@@ -1274,9 +1274,9 @@ The vertical bar | is commonly referred to as a "pipe". It is used to pipe one c
 grep -E -o 'finalNumber="[0-9]+"' file.xml | grep -E -o '[0-9]+'
 Use -E for extended regular expressions, and -o to print only the matching part. -->
 
+<!-- ################################################## -->
 
-
-## Assignment 5
+<!-- ## Assignment 5
 The elevator project designs for n **elevators**, and m **floors**  using framework **FastAPI** for creating APIs and unittest, pytest, threading,.. This is a backend application for elevator system that allows user call for starting, ending, calling elevator inside and outside. The floor and cabin index is count from 0 and on each floor. In the reality, there will be one panel on each floor for customers to send their request by clicking button (outside) or clicking the floor_number button (inside) and it will indirectedly call API for system.
 ### Usage
 #### Prerequisite
@@ -1427,4 +1427,4 @@ Access with port `8080`
 - Deploy it using Docker.
 - Integrating with monitoring (Prometheus, Grafana, cadvisor).
 
-
+ -->
